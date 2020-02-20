@@ -1,0 +1,23 @@
+body#tinymce.wp-editor {
+    font-family: "Open Sans", sans-serif;
+    margin: 10px;
+}
+
+body#tinymce.wp-editor a {
+	color: #3e4651;
+	text-decoration: none;
+}
+
+body#tinymce.wp-editor a:visited {
+	color: #3e4651;
+}
+
+body#tinymce.wp-editor a:hover,
+body#tinymce.wp-editor a:focus,
+body#tinymce.wp-editor a:active {
+	color: #3e4651;
+}
+
+body#tinymce.wp-editor h1 {
+	font-weight: 600;
+}
