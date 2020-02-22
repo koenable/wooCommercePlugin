@@ -5,7 +5,7 @@
  */
 
 /*
-Plugin Name: ShimiFreight
+Plugin Name: Shimi
 PLugin URI: http://simpleFreightCharge.com/plugin
 Description: This plugun helps calculate accurate freight delivery charges
 Version: 1.0.0
@@ -31,18 +31,35 @@ Authon: Baholo Mokoena
 
 class ShimiPlugin
 {
+    // global plugin basename
+    public $mypluginname;
+
 
     function __construct()
     {
         add_action( 'init' , array( $this, 'custom_post_type' ) );
+        $this->mypluginname = plugin_basename( __FILE__ );
     }
 
     
+
     function register()
-    {
+    {   // call the following functions
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
+
         add_action( 'admin_menu' , array( $this, 'add_admin_pages' ) );
+    
+        add_filter( "plugin_action_links_$this->mypluginname", array( $this, 'create_settings_link') );
     } 
+
+    
+    // create a clickable link to the settings page for the plugin
+    public function create_settings_link( $links ){
+         $link_to_settings = '<a href="http://localhost/wordpress/wp-admin/admin.php?page=shimi_plugin"> Settings</a>';
+         array_push( $links, $link_to_settings);
+         return $links;
+
+    }  
 
 
     // create admin page for plugin
@@ -69,6 +86,21 @@ class ShimiPlugin
          
     }
 
+
+    function custom_post_type()
+    {
+        register_post_type( 'book', ['public' => true, 'label' => 'Books' ] );
+    }
+
+
+    function enqueue()
+    {
+        // make app scripts accessible/available
+        wp_enqueue_style('shimi_plugin_style', plugins_url( '/assets/shimi_plugin_style.css' , __FILE__) );
+        wp_enqueue_script('shimi_plugin_script', plugins_url( '/assets/shimi_plugin_script.js' , __FILE__) );
+
+    }
+
     
     function deactivate() // deactivate plugin
     {
@@ -85,19 +117,6 @@ class ShimiPlugin
     }
 
 
-    function custom_post_type()
-    {
-        register_post_type( 'book', ['public' => true, 'label' => 'Books' ] );
-    }
-
-
-    function enqueue()
-    {
-        // make app scripts accessible/available
-        wp_enqueue_style('shimi_plugin_style', plugins_url( '/assets/shimi_plugin_style.css' , __FILE__) );
-        wp_enqueue_script('shimi_plugin_script', plugins_url( '/assets/shimi_plugin_script.js' , __FILE__) );
-
-    }
 
 }
 
@@ -105,7 +124,7 @@ class ShimiPlugin
 
 
 
-// check if ShimiPlugin class exists
+// if ShimiPlugin class exists, register the plugin 
 if( class_exists( ( 'ShimiPlugin' ) ) ){
     $shimiPlugin = new ShimiPlugin();
     $shimiPlugin->register();
