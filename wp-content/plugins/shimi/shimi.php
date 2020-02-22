@@ -81,3 +81,7 @@ register_activation_hook( __FILE__, array($shimiPlugin, 'activate') );
 
 // deactivation
 register_deactivation_hook( __FILE__, array($shimiPlugin, 'deactivate') );
+
+
+// unistall hook
+register_uninstall_hook(__FILE__, array($shimiPlugin, 'uninstall') );
