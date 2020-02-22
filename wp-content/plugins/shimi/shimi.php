@@ -7,7 +7,7 @@
 /*
 Plugin Name: Shimi
 PLugin URI: http://simpleFreightCharge.com/plugin
-Description: This plugun helps calculate accurate freight delivery charges
+Description: This plugun helps calculate exact delivery charges based on customer's address
 Version: 1.0.0
 Authon: Baholo Mokoena  
 
@@ -16,8 +16,22 @@ Authon: Baholo Mokoena
 
 // First check the person whos accessing this plugin is doing it from the correct source, or through the correct way
 
-// shimi plugin class
+defined( 'ABSPATH') or die( 'Your access to this plugin is not through a valid WordPress Installation' );
 
+
+// Retrieve Aotoload file in order to us php nameSpace
+
+// if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) )
+// {
+//     require_once dirname( __FILE__ ) . '/vendor/autoload.php';
+// } 
+
+
+// use namespace
+
+// use Inc\ShimiPluginActivate;
+
+// shimi plugin class
 class ShimiPlugin
 {
     
@@ -73,7 +87,9 @@ class ShimiPlugin
 
         require_once plugin_dir_path(__FILE__) . 'includes/ShimiPluginActivate.php';
         ShimiPluginActivate::activate(); 
-        ShimiPluginActivate::create_custom_post_type();         
+        ShimiPluginActivate::create_custom_post_type();   
+            // ShimiPluginActivate::activate();
+            // ShimiPluginActivate::create_custom_post_type();      
     }
 
     

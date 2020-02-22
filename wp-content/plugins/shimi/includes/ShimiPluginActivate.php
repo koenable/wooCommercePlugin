@@ -4,6 +4,8 @@
  * @package Shimi_Plugin 
  */
 
+//  namespace Inc;
+
 class ShimiPluginActivate
 {
     function __construct()
