@@ -79,7 +79,9 @@ $table_prefix = 'wp_';
  */
 define( 'WP_DEBUG', false );
 
-/*  You can turn on Jetpack Development Mode by adding the follwing line:*/
+/*  You can turn on Jetpack Development Mode by adding the follwing line:
+	Without the following statement, Jetpack will not work on localhost
+*/
 
 define( 'JETPACK_DEV_DEBUG', true );
 
