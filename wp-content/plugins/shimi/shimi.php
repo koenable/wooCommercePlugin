@@ -15,36 +15,25 @@ Authon: Baholo Mokoena
 
 
 // First check the person whos accessing this plugin is doing it from the correct source, or through the correct way
-// If not, terminate access to plugin. This can be done with either one of these statements
-
-// if (! defined('ABSPATH') ){ die; }
-
-// defined( 'ABSPATH' ) or die( 'You are not allowed to access this' );
-
-// if (!function_exists('add_action')) {
-//     echo 'File cannot be accessed due to a failed conditon';
-//     exit;
-// }
-
 
 // shimi plugin class
 
 class ShimiPlugin
 {
-    // global plugin basename
-    public $mypluginname;
+    
+    public $mypluginname; // global plugin basename
 
 
     function __construct()
     {
-        add_action( 'init' , array( $this, 'custom_post_type' ) );
+        // add_action( 'init' , array( $this, 'custom_post_type' ) );
         $this->mypluginname = plugin_basename( __FILE__ );
     }
 
     
 
-    function register()
-    {   // call the following functions
+    function register() // * queue all app scripts * create custom post type * Include Shimi on menu page * create settings *
+    {   
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 
         add_action( 'admin_menu' , array( $this, 'add_admin_pages' ) );
@@ -53,8 +42,9 @@ class ShimiPlugin
     } 
 
     
-    // create a clickable link to the settings page for the plugin
-    public function create_settings_link( $links ){
+    
+    public function create_settings_link( $links ) // create a clickable link to the settings page for the plugin
+    {
          $link_to_settings = '<a href="http://localhost/wordpress/wp-admin/admin.php?page=shimi_plugin"> Settings</a>';
          array_push( $links, $link_to_settings);
          return $links;
@@ -62,40 +52,36 @@ class ShimiPlugin
     }  
 
 
-    // create admin page for plugin
-    public function add_admin_pages()
+    
+    public function add_admin_pages()// create admin page for plugin
     {
         add_menu_page( 'Shimi Plugin' , 'Shimi', 'manage_options' , 'shimi_plugin', array($this , 'admin_index_page'), '', 110 );
         // last 2 parameters are for the icon and plugin postion on the WP menu bar
     }
 
 
-    // fetch - template: HTML,CSS and JS for Admin page
-    public function admin_index_page()
+    
+    public function admin_index_page() // fetch - template: HTML,CSS and JS for Admin page
     {
         require_once plugin_dir_path( __FILE__ ) . 'templates/admin_index.php';
     }
 
 
 
-    function activate() // activate plugin
+    function activate() // activate plugin. Use static method call 
     {
 
         require_once plugin_dir_path(__FILE__) . 'includes/ShimiPluginActivate.php';
         ShimiPluginActivate::activate(); 
-         
+        ShimiPluginActivate::create_custom_post_type();         
     }
 
+    
 
-    function custom_post_type()
+
+    
+    function enqueue() // make app scripts accessible/available 
     {
-        register_post_type( 'book', ['public' => true, 'label' => 'Books' ] );
-    }
-
-
-    function enqueue()
-    {
-        // make app scripts accessible/available
         wp_enqueue_style('shimi_plugin_style', plugins_url( '/assets/shimi_plugin_style.css' , __FILE__) );
         wp_enqueue_script('shimi_plugin_script', plugins_url( '/assets/shimi_plugin_script.js' , __FILE__) );
 
@@ -124,8 +110,9 @@ class ShimiPlugin
 
 
 
-// if ShimiPlugin class exists, register the plugin 
-if( class_exists( ( 'ShimiPlugin' ) ) ){
+
+if( class_exists( ( 'ShimiPlugin' ) ) ) // if ShimiPlugin class exists, register the plugin 
+{
     $shimiPlugin = new ShimiPlugin();
     $shimiPlugin->register();
 }
